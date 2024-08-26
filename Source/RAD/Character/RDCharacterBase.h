@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "RDCharacterBase.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
+
 UCLASS()
 class RAD_API ARDCharacterBase : public ACharacter
 {
@@ -25,5 +28,14 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UPROPERTY(EditAnywhere, Category = "Camera")
+	UCameraComponent* TopDownCameraComponent;
+
+
+	FORCEINLINE USpringArmComponent* GetCameraBoom() { return CameraBoom; }
+private:
+	UPROPERTY(EditAnywhere, Category = "Camera", meta = (AllowPrivateAccess = "true"))
+	USpringArmComponent* CameraBoom;
 
 };
