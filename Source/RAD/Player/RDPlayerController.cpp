@@ -6,6 +6,8 @@
 #include "EnhancedInputComponent.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Test/RDTestObject.h"
+
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -32,7 +34,7 @@ void ARDPlayerController::SetupInputComponent()
 
 	if(UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
 	{
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &ARDPlayerController::OnInputStarted);
+		// EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &ARDPlayerController::OnInputStarted);
 		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Triggered, this, &ARDPlayerController::OnSetDestinationTriggered);
 		// EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Completed, this, &ARDPlayerController::OnSetDestinationReleased);
 		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Canceled, this, &ARDPlayerController::OnSetDestinationReleased);
@@ -77,6 +79,7 @@ void ARDPlayerController::OnSetDestinationTriggered()
 	if(ControlledPawn)
 	{
 		FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
+		// bForce -> ??
 		ControlledPawn->AddMovementInput(WorldDirection, 1.0, false);
 	}
 }
@@ -88,9 +91,6 @@ void ARDPlayerController::OnSetDestinationReleased()
 	isFollowingCursor = false;
 
 	UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
-	
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination/*,FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true*/);
+	UE_LOG(LogTemplateCharacter, Warning, TEXT("Character Nav Moving"));
 }
-
-
-

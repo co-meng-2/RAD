@@ -14,7 +14,7 @@ class UInputAction;
  * 
  */
 
-DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Warning, All);
 
 UCLASS()
 class RAD_API ARDPlayerController : public APlayerController
@@ -53,6 +53,4 @@ protected:
 private:
 	bool GetHitResult();
 	FVector CachedDestination;
-	FAIMoveRequest MoveRequest;
-	
 };
