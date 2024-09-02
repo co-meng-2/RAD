@@ -30,9 +30,9 @@ public:
 	float GetMaxHealth() const;
 
 protected:
-	UPROPERTY(BlueprintReadOnly, Category = "RD | GAS")
+	UPROPERTY(EditAnywhere, Category = "RD | GAS")
 	URDAbilitySystemComponent* AbilitySystemComponent;
-	UPROPERTY(BlueprintReadOnly, Category = "RD | GAS")
+	UPROPERTY(EditAnywhere, Category = "RD | GAS")
 	URDAttributeSet* AttributeSet;
 
 	FDelegateHandle HealthChangedDelegateHandle;

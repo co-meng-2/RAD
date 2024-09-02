@@ -17,8 +17,6 @@ class URDAbilitySystemComponent;
 class USpringArmComponent;
 class UCameraComponent;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCharacterDiedDelegate, ARDCharacterBase*, character);
-
 UCLASS()
 class RAD_API ARDCharacterBase : public ACharacter, public IAbilitySystemInterface
 {
@@ -52,7 +50,10 @@ private:
 
 	// GAS
 public:
+	UPROPERTY(EditAnywhere, Category = "RD | GAS")
 	TWeakObjectPtr<URDAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY(EditAnywhere, Category = "RD | GAS")
 	TWeakObjectPtr<URDAttributeSet> AttributeSet;
 
 	UPROPERTY(EditAnywhere, Category = "RD | GAS")
@@ -62,22 +63,9 @@ public:
 	TArray<TSubclassOf<UGameplayEffect>> StartupEffects;
 
 	UPROPERTY(EditAnywhere, Category = "RD | GAS")
-	TArray<TSubclassOf<UGameplayAbility>> CharacterAbilities;
-
-	UPROPERTY(BlueprintAssignable, Category = "RD | GAS")
-	FCharacterDiedDelegate OnCharacterDied;
-
-	UFUNCTION(BlueprintCallable, Category = "RD | GAS")
-	virtual bool IsAlive() const;
-	UFUNCTION(BlueprintCallable, Category = "RD | GAS")
-	virtual int32 GetAbilityLevel(EAbilityID AbilityID);
+	TArray<TSubclassOf<UGameplayAbility>> Abilities;
 
 	virtual void RemoveCharacterAbilities();
-
-	virtual void Die();
-
-	UFUNCTION(BlueprintCallable, Category = "RD | GAS")
-	virtual void FinishDying();
 
 	UFUNCTION(BlueprintCallable, Category = "RD | GAS")
 	float GetHealth() const;

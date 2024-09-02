@@ -73,26 +73,6 @@ void ARDCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-bool ARDCharacterBase::IsAlive() const
-{
-	return GetHealth() > 0.f;
-}
-
-int32 ARDCharacterBase::GetAbilityLevel(EAbilityID AbilityID)
-{
-	return 1;
-}
-
-
-
-void ARDCharacterBase::Die()
-{
-}
-
-void ARDCharacterBase::FinishDying()
-{
-}
-
 float ARDCharacterBase::GetHealth() const
 {
 	return AttributeSet.Get()->GetHealth();
@@ -110,13 +90,11 @@ void ARDCharacterBase::AddCharacterAbilities()
 		return;
 	}
 
-	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
-	EffectContext.AddSourceObject(this);
-
-	for (TSubclassOf<UGameplayAbility>& StartupAbility : CharacterAbilities)
+	for (int idx = 1 ; idx <= Abilities.Num(); ++idx)
 	{
 		AbilitySystemComponent->GiveAbility(
-			 FGameplayAbilitySpec(StartupAbility));
+			 FGameplayAbilitySpec(Abilities[idx], 0));
+														// InSourceObject -> 능력이 누구로부터 부여되었는지 설정.
 	}
 
 	AbilitySystemComponent->bCharacterAbilityGiven = true;
@@ -172,7 +150,7 @@ void ARDCharacterBase::RemoveCharacterAbilities()
 	TArray<FGameplayAbilitySpecHandle> AbilitiesToRemove;
 	for(const FGameplayAbilitySpec& Spec : AbilitySystemComponent->GetActivatableAbilities())
 	{
-		if((Spec.SourceObject == this) && CharacterAbilities.Contains(Spec.Ability->GetClass()))
+		if((Spec.SourceObject == this) && Abilities.Contains(Spec.Ability->GetClass()))
 		{
 			AbilitiesToRemove.Add(Spec.Handle);
 		}
@@ -195,5 +173,3 @@ UAbilitySystemComponent* ARDCharacterBase::GetAbilitySystemComponent() const
 {
 	return Cast<UAbilitySystemComponent>(AbilitySystemComponent.Get());
 }
-
-
